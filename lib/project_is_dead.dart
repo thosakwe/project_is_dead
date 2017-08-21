@@ -28,15 +28,15 @@ double isDeadNeuronOld(
   return sigmoid;
 }
 
-/// min. 100 stars
-double starsNeuron(int stargazersCount) => stargazersCount >= 100 ? 1.0 : 0.0;
+/// Less than 100 stars
+double starsNeuron(int stargazersCount) => stargazersCount < 100 ? 1.0 : 0.0;
 
-/// At least 5 forks
-double forksNeuron(int forksCount) => forksCount >= 5 ? 1.0 : 0.0;
+/// Less than 5 forks
+double forksNeuron(int forksCount) => forksCount < 5 ? 1.0 : 0.0;
 
-/// At least one commit a week
-double commitsNeuron(int commitsThisYear) => commitsThisYear >= 52 ? 1.0 : 0.0;
+/// Less than one commit per week
+double commitsNeuron(int commitsThisYear) => commitsThisYear < 52 ? 1.0 : 0.0;
 
-/// At least one commit within the past month
+/// A month or more without a commit
 double timeSinceLastCommitNeuron(int milliseconds) =>
-    milliseconds <= const Duration(days: 30).inMilliseconds ? 1.0 : 0.0;
+    milliseconds >= const Duration(days: 30).inMilliseconds ? 1.0 : 0.0;
