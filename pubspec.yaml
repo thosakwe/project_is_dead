@@ -1,0 +1,8 @@
+name: project_is_dead
+dependencies:
+  dotenv: ^0.1.3
+  func: ^1.0.0
+  github: ^3.0.0
+  meta: ^1.0.0
+  pool: ^1.0.0
+  tuple: ^1.0.0
