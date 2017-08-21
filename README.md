@@ -12,6 +12,8 @@ Training data resides in `samples.json`. Feel free to fork and add
 more samples!!!
 
 ## Running
+Replace the `.env.example` with a `.env` file and a Github API token.
+
 Run this Dart script to train the AI and then start a simple REPL:
 
 ```bash
