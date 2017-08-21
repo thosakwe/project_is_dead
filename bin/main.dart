@@ -61,7 +61,7 @@ main() async {
 
   // Now, train the algorithm.
 
-  int m = 10000;
+  int m = 20000;
   for (int i = 0; i < m; i++) {
     var pct = (i * 100.0 / m).toStringAsFixed(2);
     stdout.write('\rTraining $pct%...');
@@ -95,7 +95,9 @@ main() async {
     var slug = stdin.readLineSync();
     var repo =
         await gh.repositories.getRepository(new RepositorySlug.full(slug));
-    var repoIsDead = isDead(repo, await commitsThisYear(slug, gh)).round() == 1
+    var dead = isDead(repo, await commitsThisYear(slug, gh));
+    print('Result: $dead');
+    var repoIsDead = dead > 0.5
         ? true
         : false;
 
@@ -109,7 +111,17 @@ main() async {
 Future<int> commitsThisYear(String slug, GitHub gh) async {
   var activityResponse =
       await gh.request('GET', '/repos/$slug/stats/commit_activity');
-  List<Map<String, dynamic>> activity = JSON.decode(activityResponse.body);
+  var untyped = JSON.decode(activityResponse.body);
+
+  if (untyped is Map) {
+    // Empty commit history
+    return 0;
+  } else if (untyped is! List) {
+    print(activityResponse.body);
+    throw 'Could not fetch activity of $slug.';
+  }
+
+  List<Map<String, dynamic>> activity = untyped;
 
   // Add up the total commits over the past year
   return activity.fold<int>(0, (sum, map) {
